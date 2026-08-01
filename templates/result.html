@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Attendance Report
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Student Profile -->
+<div class="student-card">
+
+    <img
+        src="{{ report.student.photo }}"
+        alt="Student Photo"
+        class="student-photo">
+
+    <div>
+
+        <h2>{{ report.student.name }}</h2>
+
+        <p>{{ report.student.section }}</p>
+
+    </div>
+
+</div>
+
+<!-- Overall Attendance -->
+<div class="overall-card">
+
+    <h1>Overall Attendance</h1>
+
+    <h2>{{ report.overall }}%</h2>
+
+</div>
+
+<!-- Subject Cards -->
+<div class="subjects">
+
+{% for subject in report.subjects %}
+
+<div class="subject-card {{ subject.status }}">
+
+    <h2>{{ subject.subject }}</h2>
+
+    <div class="progress">
+        <div class="progress-fill" style="width: {{ subject.percentage }}%;"></div>
+    </div>
+
+    <p><b>Present:</b> {{ subject.present }}</p>
+    <p><b>Absent:</b> {{ subject.absent }}</p>
+    <p><b>Total:</b> {{ subject.total }}</p>
+    <p><b>Attendance:</b> {{ subject.percentage }}%</p>
+
+    {% if subject.percentage < 75 %}
+        <p>⚠ Need {{ subject.need_for_75 }} more consecutive classes.</p>
+    {% else %}
+        <p>✅ You can miss {{ subject.can_miss }} more classes.</p>
+    {% endif %}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}
